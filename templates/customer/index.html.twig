@@ -1,0 +1,20 @@
+{% extends 'customer/base.html.twig' %}
+
+{% block title %}Hallo CustomerController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    Diese freundliche Nachricht kommt von:
+    <ul>
+        <li>Your controller at <code>/Applications/MAMP/htdocs/shop-ease/src/Controller/CustomerController.php</code></li>
+        <li>Your template at <code>/Applications/MAMP/htdocs/shop-ease/templates/customer/index.html.twig</code></li>
+    </ul>
+</div>
+{% endblock %}

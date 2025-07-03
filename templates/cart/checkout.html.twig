@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checkout!{% endblock %}
+
+{% block body %}
+
+    <div class="min-h-screen bg-gray-100 py-12 px-4">
+
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Zur Kasse &#128722;</h1>
+            {% if items is empty %}
+                <p class="text-gray-500">Your cart is empty.</p>
+            {% else %}
+                <div class="space-y-6">
+                    {% for item in items %}
+                        <div class="bg-white shadow-md rounded-2xl p-4 border border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">{{ item.product.name }}</h3>
+                            <p class="text-sm text-gray-600">Menge: <span> {{ item.quantity}} </span></p>
+                            <p class="text-sm text-gray-600">
+                                Zwischensumme: <span class="font-medium text-gray-800"> {{ item.subtotal | number_format(2) }} €</span>
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <div class="border-t pt-4 space-y-2">
+                        <p class="text-base font-medium text-gray-700">
+                            Gesamtanzahl: <span class="font-bold">{{ count }}</span>
+                        </p>
+                        <p class="text-base font-medium text-gray-700">
+                            Gesamtpreis: <span class="text-green-600 font-bold text-lg">{{ tt | number_format(2) }} €</span>
+                        </p>
+                    </div>
+                </div>
+
+                <form action="{{ path('cart_checkout') }}" method="POST" class="space-y-5">
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Zahlungsmethode:</label>
+
+                        <label class="flex items-center mb-2">
+                            <input type="radio" name="payment_method" value="stripe" checked class="mr-2">
+                            💳 Bezahlen mit Stripe
+                        </label>
+
+                        <label class="flex items-center mb-2">
+                            <input type="radio" name="payment_method" value="paypal" class="mr-2">
+                            💰 Bezahlen mit PayPal
+                        </label>
+                    </div>
+
+                    <button type="submit" id="checkout-button"
+                            class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition">
+                        Zur Kasse gehen
+                    </button>
+                </form>
+
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.getElementById('checkout-button').addEventListener('click', function (event) {
+            event.preventDefault(); // Verhindert das automatische Absenden des Formulars
+
+            fetch('/cart/stripe/checkout', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    // Weiterleitung zu Stripe Checkout
+                    window.location.href = data.url;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Es gab einen Fehler beim Starten des Checkout-Prozesses.');
+                });
+        });
+    </script>
+
+
+{% endblock %}

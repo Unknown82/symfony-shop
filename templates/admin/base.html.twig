@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Admin Dashboard{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body class="bg-gray-100 text-gray-900">
+
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-white shadow-md p-4 flex justify-between items-center">
+            <div class="text-lg font-bold text-blue-600">Admin Panel</div>
+        </header>
+
+        <div class="flex flex-1">
+            <aside class="w-64 bg-white shadow-md">
+                <nav class="mt-5">
+                    <a href="{{ path('app_admin') }}" class="block py-2 px-4 hover:bg-blue-100">Dashboard</a>
+                    <a href="{{ path('app_product') }}" class="block py-2 px-4 hover:bg-blue-100">Manage Product</a>
+                    <a href="{{ path('app_category') }}" class="block py-2 px-4 hover:bg-blue-100">Manage Categories</a>
+                    <a href="" class="block py-2 px-4 hover:bg-blue-100">Manage Orders</a>
+                    <a href="" class="block py-2 px-4 hover:bg-blue-100">Manage Users</a>
+                </nav>
+            </aside>
+
+            <main class="flex-1 p-6">
+
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="flash-message mt-4 mx-auto w-3/4 p-4 text-white rounded-lg shadow-md
+                            {% if label == 'success' %} bg-green-500
+                            {% elseif label == 'error'%} bg-red-500
+                            {% else %} bg-blue-500 {% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                <script>
+                    setTimeout(() => {
+                        document.querySelectorAll('.flash-message').forEach(el => el.remove());
+                    }, 5000);
+                </script>
+
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Image Preview Script -->
+    <script>
+        function previewImage(input) {
+            const file = input.files[0];
+            const preview = document.getElementById('imagePreview');
+            const message = document.getElementById('previewMessage');
+
+            preview.classList.add('hidden');
+            message.classList.add('hidden');
+            message.textContent = '';
+
+            if (file) {
+                const allwedTypes = ['image/jpeg', 'image/png', "image/gif", "image/webp", "image/svg"];
+                if (!allwedTypes.includes(file.type)) {
+                    message.textContent = 'Bitte laden Sie eine gültige Bilddatei hoch (JPEG, JPG, PNG, GIF, WEBP) JS';
+                    message.classList.remove('hidden');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+    <!-- Confirm Delete Script -->
+    <script>
+        function confirmDelete(productId) {
+            Swal.fire({
+                title: "Bist du sicher?",
+                text: "Du kannst diese Aktion nicht rückgängig machen",
+                icon: "Warnung",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Ja, löschen!",
+                cancelButtonText: "Abbrechen"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + productId).submit();
+                }
+            });
+        }
+    </script>
+    </body>
+</html>

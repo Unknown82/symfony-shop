@@ -1,0 +1,32 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}{{ isEdit ? 'Edit' : 'Add' }} Category{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-br from-blue-100 via-green-100 to-white py-10 px-4">
+    <div class="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl p-8 border border-blue-100">
+        <h1 class="text-3xl font-extrabold text-blue-900 mb-6">{{ isEdit ? 'Edit' : 'Add' }} Category</h1>
+        {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+        <div>
+            {{ form_label(form.name, null, {'label_attr': {'class': 'block text-gray-700 font-medium mb-1'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'w-full p-3 border rounded-lg shadow-sm focus:ring-blue-400'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div>
+            {{ form_label(form.description, null, {'label_attr': {'class': 'block text-gray-700 font-medium mb-1'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'w-full p-3 border rounded-lg shadow-sm focus:ring-blue-400'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+        <div class="flex items-center gap-4">
+            <button type="submit" class="bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold px-6 py-2 rounded-lg hover:from-green-600 hover:to-blue-600 transition shadow">
+                {{ isEdit ? 'Update' : 'Create' }}
+            </button>
+            <a href="{{ path('app_category') }}" class="text-blue-600 hover:underline font-medium">
+                <- Zurück zur Liste
+            </a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}

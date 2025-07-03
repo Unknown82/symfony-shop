@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hallo CartController!{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-gray-100 py-10 px-4">
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">🛒 Ihr Warenkorb</h1>
+
+            {% if items is empty %}
+                <p class="text-gray-500">Ihr Warenkorb ist leer.</p>
+            {% else %}
+                <ul class="space-y-6">
+                    {% for item in items %}
+                        <li id="item-{{ item.product.id }}" class="flex items-center gap-4 justify-between p-4 bg-gray-50 rounded-lg border">
+                            {% if item.product.image %}
+                                <img src="{{ asset('uploads/product_images/' ~ item.product.image) }}" alt="{{ item.product.name }}" class="h-16 w-16 object-cover rounded shadow-sm border">
+                            {% else %}
+                                <div class="h-16 w-16 bg-gray-200 flex items-center justify-center rounded text-gray-400 text-xs">Kein Bild</div>
+                            {% endif %}
+
+                            <div class="flex-1">
+                                <h2 class="text-lg font-semibold text-gray-700">{{ item.product.name }}</h2>
+
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="text-sm text-gray-600">Quantity:</span>
+                                    <button onclick="updateQuantity({{ item.product.id }}, -1)" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">-</button>
+                                    <span id="qty-{{ item.product.id }}" class="px-2 text-gray-800 font-semibold">{{ item.quantity }}</span>
+                                    <button onclick="updateQuantity({{ item.product.id }}, 1)" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">+</button>
+                                </div>
+
+                                <p class="text-sm text-gray-600 mt-2">
+                                    Subtotal: <span class="font-medium text-green-600">$<span id="subtotal-{{ item.product.id }}">{{ item.subtotal|number_format(2) }}</span></span>
+                                </p>
+                            </div>
+                            <button
+                                class="text-red-500 hover:text-red-700 font-semibold text-sm whitespace-nowrap"
+                                onclick="removeItem({{ item.product.id }})"
+                            >
+                                ✕ Löschen
+                            </button>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-8 text-right">
+                    <p class="text-xl font-bold text-gray-800">
+                        Total: <span class="text-green-600">$<span id="cart-total">{{ total | number_format(2) }}</span></span>
+                    </p>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Items in cart: <span id="cart-count">{{ count }}</span>
+                    </p>
+                    <a href="{{ path('cart_checkout') }}"
+                       class="inline-block mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow transition">
+                        ✓ Zur Kasse gehen
+                    </a>
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}
