@@ -4,6 +4,8 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/.env.dev
+/.env.test
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -19,3 +21,4 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+/.idea

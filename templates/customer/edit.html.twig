@@ -1,0 +1,25 @@
+{% extends 'customer/base.html.twig' %}
+
+{% block title %}Hallo CustomerController!{% endblock %}
+
+{% block body %}
+
+    <h2 class="text-xl font-bold mb-4">Profil bearbeiten</h2>
+
+    {{ form_start(form) }}
+
+    <div class="mb-4">
+        {{ form_label(form.fullName) }}
+        {{ form_widget(form.fullName, {'attr': {'class': 'border p-2 w-full'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.address) }}
+        {{ form_widget(form.address, {'attr': {'class': 'border p-2 w-full'}}) }}
+    </div>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Aktualisieren</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

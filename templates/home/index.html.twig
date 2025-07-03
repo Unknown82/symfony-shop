@@ -33,12 +33,12 @@
                     <div class="flex justify-between items-center space-x-2">
                         <a href="{{ path('user_product_show', { id: product.id }) }}"
                            class="flex-1 text-center py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition">
-                            Produkt anzeigen
+                            Info
                         </a>
 
                         <form action="{{ path('app_home', {id:product.id}) }}" method="post">
                             <button data-id="{{ product.id }}" class="add-to-cart-btn flex items-center justify-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-lg transition">
-                                🛒 In den Warenkorb legen
+                                🛒 In den Warenkorb
                             </button>
                         </form>
                     </div>
