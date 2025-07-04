@@ -75,7 +75,7 @@ final class CartController extends AbstractController
         $cartItems = $cartService->getDetailedItems();
 
         if (empty($cartItems)) {
-            $this->addFlash('error', 'Your cart is empty.');
+            $this->addFlash('error', 'Dein Warenkorb ist leer.');
             return $this->redirectToRoute('cart_view');
         }
 

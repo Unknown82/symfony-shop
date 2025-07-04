@@ -4,11 +4,15 @@ namespace App\Controller;
 
 
 use App\Form\ProfileType;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\SecurityBundle\Security;
+
+
 
 final class CustomerController extends AbstractController
 {
@@ -35,4 +39,39 @@ final class CustomerController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    #[Route('/my-orders', name: 'customer_orders')]
+    public function myOrders(OrderRepository $orderRepo, Security $security)
+    {
+        $user = $security->getUser();
+
+        if (!$user)
+        {
+            throw $this->createAccessDeniedException('Du musst ein eingeloggter Benutzer sein.');
+        }
+
+        $orders = $orderRepo->findBy(
+            ['userEmail' => $user->getEmail()],
+            ['createdAt' => 'DESC']
+        );
+
+        return $this->render('customer/orders.html.twig', [
+            'orders' => $orders
+        ]);
+    }
+
+    #[Route('/track-order/{ref}', name: 'track_order')]
+    public function trackOrder(string $ref, OrderRepository $orderRepo): Response
+    {
+        $order = $orderRepo->findOrderWithHistories($ref);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Bestellung nicht gefunden!');
+        }
+
+        return $this->render('customer/order_tracking.html.twig', [
+            'order' => $order
+        ]);
+    }
+
+
 }

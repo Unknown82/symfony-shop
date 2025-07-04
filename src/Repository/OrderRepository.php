@@ -22,6 +22,17 @@ class OrderRepository extends ServiceEntityRepository
         $entityManager->persist($order);
         $entityManager->flush();
     }
+    public function findOrderWithHistories(string $orderReference): ?Order
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.cartHistories', 'h')
+            ->addSelect('h')
+            ->where('o.orderReference = :ref')
+            ->setParameter('ref', $orderReference)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
 
     //    /**

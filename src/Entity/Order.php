@@ -49,10 +49,13 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $orderReference = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt = null;
+
     /**
      * @var Collection<int, CartHistory>
      */
-    #[ORM\OneToMany(targetEntity: CartHistory::class, mappedBy: 'productOrder')]
+    #[ORM\OneToMany(targetEntity: CartHistory::class, mappedBy: 'order')]
     private Collection $cartHistories;
 
     public function __construct()
@@ -193,6 +196,18 @@ class Order
     public function setOrderReference(string $orderReference): static
     {
         $this->orderReference = $orderReference;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

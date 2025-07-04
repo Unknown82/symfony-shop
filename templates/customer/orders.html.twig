@@ -1,0 +1,71 @@
+{% extends 'customer/base.html.twig' %}
+
+{% block title %}Hello CustomerController!{% endblock %}
+
+{% block body %}
+
+    <div class="max-w-5xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl border border-gray-200">
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Meine Bestellungen</h1>
+
+        {% if orders is empty %}
+            <p class="text-gray-600">Du hast noch keine Bestellungen aufgegeben.</p>
+        {% else %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full border border-gray-200 text-sm">
+                    <thead class="bg-gray-100 text-gray-700 uppercase text-xs tracking-wider">
+                    <tr>
+                        <th class="px-4 py-3 text-left border-b">Datum</th>
+                        <th class="px-4 py-3 text-left border-b">Referenz</th>
+                        <th class="px-4 py-3 text-left border-b">Status</th>
+                        <th class="px-4 py-3 text-left border-b">Gesamt</th>
+                        <th class="px-4 py-3 text-left border-b">Sendung verfolgen</th>
+                        <th class="px-4 py-3 text-left border-b">Rechnung</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-gray-800 divide-y">
+                    {% for order in orders %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2">{{ order.createdAt|date('Y-m-d') }}</td>
+                            <td class="px-4 py-2 font-medium">{{ order.orderReference }}</td>
+                            <td class="px-4 py-2">
+
+                                {% if order.isDelivered %}
+                                    <span class="text-green-600 font-semibold">Geliefert</span>
+                                {% elseif order.isShipped %}
+                                    <span class="text-blue-600 font-semibold">Versendet</span>
+                                {% elseif order.isProcessed %}
+                                    <span class="text-yellow-600 font-semibold">In Bearbeitung</span>
+                                {% else %}
+                                    <span class="text-gray-600 font-semibold">Ausstehend</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-2">${{ order.total }}</td>
+                            <td class="px-4 py-2">
+                                {% if order.orderReference %}
+                                    <a href="{{ path('track_order', {'ref': order.orderReference}) }}" class="text-indigo-600 hover:underline">
+                                        Sendung verfolgen
+                                    </a>
+                                {% else %}
+                                    <span class="text-gray-500 italic">Keine Referenz</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-2">
+                                {% if order.orderReference %}
+                                    <a href="#" class="text-indigo-600 hover:underline">Rechnung</a>
+                                {% else %}
+                                    <span class="text-gray-500 italic">Keine Referenz</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
