@@ -8,6 +8,50 @@
         <h1 class="text-3xl font-bold text-gray-800 border-b pb-3">
             Bestellung verfolgen <span class="text-indigo-600">{{ order.orderReference }}</span>
         </h1>
+            <ul class="space-y-2 text-gray-700">
+                <li> <span class="font-semibold"> Datum: </span> {{ order.createdAt|date('Y-m-d H:i') }}</li>
+                <li>
+                    <span class="font-semibold">Status:</span>
+                    {% if order.isDelivered %}
+                        <span class="text-green-600 font-semibold">Geliefert</span>
+                    {% elseif order.isShipped %}
+                        <span class="text-blue-600 font-semibold">Versandt</span>
+                    {% elseif order.isProcessed %}
+                        <span class="text-yellow-600 font-semibold">Bearbeitet</span>
+                    {% else %}
+                        <span class="text-gray-600 font-semibold">Ausstehend</span>
+                    {% endif %}
+                </li>
+                <li>
+                    <span class="font-semibold">Gesamt:</span>
+                    <span class="text-green-700 font-medium">{{ order.total }} €</span>
+                </li>
+                <li>
+                    <span class="font-semibold">Zahlungsmethode:</span> {{ order.paymentMethod }}
+                </li>
+                <li>
+                    <span class="font-semibold">E-Mail:</span> {{ order.userEmail }}
+                </li>
+            </ul>
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-3 border-b pb-2">Artikel</h2>
+            <ul class="space-y-2">
+                {% for history in order.cartHistories %}
+                    <li class="bg-gray-50 p-3 rounded-md border border-gray-200 shadow-sm">
+                        <div class="text-gray-800 font-medium">
+                            {{ history.productName }}
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            Referenz: {{ history.order.orderReference }} – Menge: {{ history.quantity }} –
+                            Zwischensumme: <span class="font-semibold text-green-700">€{{ history.subtotal }}</span>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="text-gray-500 italic">Keine Artikel in dieser Bestellung</li>
+                {% endfor %}
+            </ul>
+        </div>
+
     </div>
 
 {% endblock %}

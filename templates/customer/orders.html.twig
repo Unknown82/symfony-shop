@@ -52,7 +52,7 @@
                             </td>
                             <td class="px-4 py-2">
                                 {% if order.orderReference %}
-                                    <a href="#" class="text-indigo-600 hover:underline">Rechnung</a>
+                                    <a href="{{ path('generate_invoice', {'ref': order.orderReference}) }}" class="text-indigo-600 hover:underline">Rechnung</a>
                                 {% else %}
                                     <span class="text-gray-500 italic">Keine Referenz</span>
                                 {% endif %}

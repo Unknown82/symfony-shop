@@ -73,5 +73,21 @@ final class CustomerController extends AbstractController
         ]);
     }
 
+    #[Route('/generate-invoice/{ref}', name: 'generate_invoice')]
+    public function generateInvoice(string $ref, OrderRepository $orderRepository): Response
+    {
+        $order = $orderRepository->findOneBy(['orderReference' => $ref]);
+
+        if (!$order) {
+            $this->addFlash('error', 'Bestellung nicht gefunden!');
+            return $this->redirectToRoute('order_history');
+        }
+
+        return $this->render('customer/invoice.html.twig', [
+            'order' => $order
+        ]);
+    }
+
+
 
 }
