@@ -3,18 +3,55 @@
 {% block title %}Hallo CustomerController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1 class="text-2xl font-bold mb-6">Willkommen im Dashboard</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
 
-    Diese freundliche Nachricht kommt von:
-    <ul>
-        <li>Your controller at <code>/Applications/MAMP/htdocs/shop-ease/src/Controller/CustomerController.php</code></li>
-        <li>Your template at <code>/Applications/MAMP/htdocs/shop-ease/templates/customer/index.html.twig</code></li>
-    </ul>
-</div>
+        <div class="bg-white p-6 rounded-2xl shadow">
+            <h2 class="text-lg font-semibold">Gesamte Bestellungen</h2>
+            <p class="text-2xl font-bold text-blue-600">{{ orders|length }}</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow">
+            <h2 class="text-lg font-semibold">Gesamtausgaben</h2>
+            <p class="text-2xl font-bold text-green-600">{{ totalSpent|number_format(2) }} €</p>
+        </div>
+    </div>
+        <h2 class="text-xl font-bold mb-4">Bestellverlauf</h2>
+
+        <table class="table-auto w-full bg-white shadow rounded-2xl">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="px-4 py-2 text-left">Datum</th>
+                <th class="px-4 py-2 text-left">Referenz</th>
+                <th class="px-4 py-2 text-left">Gesamt</th>
+                <th class="px-4 py-2 text-left">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr class="border-t">
+                    <td class="px-4 py-2">{{ order.createdAt|date('Y-m-d') }}</td>
+                    <td class="px-4 py-2">{{ order.orderReference }}</td>
+                    <td class="px-4 py-2">{{ order.total }} €</td>
+                    <td class="px-4 py-2">
+                        {% if order.isDelivered %}
+                            <span class="text-green-600 font-semibold">Geliefert</span>
+                        {% elseif order.isShipped %}
+                            <span class="text-blue-600 font-semibold">Versandt</span>
+                        {% elseif order.isProcessed %}
+                            <span class="text-yellow-600 font-semibold">Bearbeitet</span>
+                        {% else %}
+                            <span class="text-gray-600 font-semibold">Ausstehend</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center py-4">Sie haben noch keine Bestellungen.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
 {% endblock %}

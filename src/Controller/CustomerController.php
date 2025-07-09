@@ -17,10 +17,20 @@ use Symfony\Bundle\SecurityBundle\Security;
 final class CustomerController extends AbstractController
 {
     #[Route('/customer', name: 'app_customer')]
-    public function index(): Response
+    public function index(OrderRepository $orderRepository, Security $security): Response
     {
+        $user = $security->getUser();
+        $userEmail = $user->getUserIdentifier();
+
+        $orders = $orderRepository->findBy(['userEmail' => $userEmail]);
+
+        $totalSpent = array_reduce($orders, function ($carry, $order) {
+            return $carry + $order->getTotal();
+        },0);
+
         return $this->render('customer/index.html.twig', [
-            'controller_name' => 'CustomerController',
+            'orders' => $orders,
+            'totalSpent' => $totalSpent,
         ]);
     }
     #[Route('/edit', name: 'profile_edit')]
