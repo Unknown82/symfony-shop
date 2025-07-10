@@ -10,12 +10,15 @@ use App\Service\CartService;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -119,7 +122,8 @@ final class CartController extends AbstractController
         SessionInterface $session,
         OrderRepository $orderRepository,
         CartHistoryRepository $cartHistoryRepo,
-        Security $security
+        Security $security,
+        MailerInterface $mailer
     ): Response
     {
         $items = $cartService->getDetailedItems();
@@ -163,6 +167,18 @@ final class CartController extends AbstractController
 
         $orderRepository->saveOrder($order);
         $session->remove('cart');
+
+        $email = (new Email())
+            ->from('kontakt@andreas-unger.de')
+            ->to($userEmail)->subject('Warenkorb erforderlich'. $orderReference)
+            ->html("
+                <p>Hallo, {{ $userName }},</p>
+                <p>Vielen Dank für Ihren Einkauf! Ihre Bestellnummer lautet <strong>{{ $orderReference }}</strong></p>
+                <p>Gesamtbetrag: <strong>{{ $total }}</strong></p>
+                <p>Wir werden Ihre Bestellung so schnell wie möglich bearbeiten und versenden.</p>
+                <p>Mit freundlichen Grüßen,<br>Ihr Store-Team</p>
+            ");
+        $mailer->send($email);
 
         return $this->render('cart/confirmation.html.twig', [
             'items' => $items,
