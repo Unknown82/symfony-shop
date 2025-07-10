@@ -1,0 +1,25 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}AdminController!{% endblock %}
+
+{% block body %}
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">
+        Rollen bearbeiten für <span class="text-blue-600">{{ user.email }}</span>
+    </h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-xl">
+        {{ form_start(form) }}
+        <div class="space-y-4">
+            {{ form_widget(form) }}
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 mt-6 rounded transition">
+            Rollen aktualisieren
+        </button>
+        {{ form_end(form) }}
+    </div>
+
+    <a href="{{ path('app_admin_users') }}"
+       class="inline-block mt-6 text-sm text-gray-600 hover:text-gray-800 underline transition">
+        Zurück zur Benutzerliste
+    </a>
+{% endblock %}

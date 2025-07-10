@@ -1,0 +1,48 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}AdminController!{% endblock %}
+
+{% block body %}
+
+    <div class="overflow-x-auto rounded-lg shadow-md bg-white">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Alle Benutzer</h1>
+        <table class="min-w-full table-auto border border-gray-200">
+            <thead class="bg-gray-100 text-gray-700 text-left text-sm uppercase tracking-wider">
+                <tr>
+                    <th class="px-6 py-3 border-b">#</th>
+                    <th class="px-6 py-3 border-b">E-Mail</th>
+                    <th class="px-6 py-3 border-b">Vollständiger Name</th>
+                    <th class="px-6 py-3 border-b">Rollen</th>
+                    <th class="px-6 py-3 border-b text-center">Aktionen</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700 text-sm divide-y divide-gray-200">
+            {% for user in users %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-6 py-4">{{ loop.index }}</td>
+                    <td class="px-6 py-4">{{ user.email }}</td>
+                    <td class="px-6 py-4">
+                        {% if user.fullName %}
+                            {{ user.fullName }}
+                        {% else %}
+                            <span class="text-red-500 italic">(kein Name)</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">{{ user.roles|join(', ') }}</td>
+                    <td class="px-6 py-4 text-center">
+                        <a href="{{ path('app_admin_users_edit', {id:user.id}) }}"
+                           class="text-blue-600 hover:text-blue-800 font-medium transition">
+                            Bearbeiten
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-gray-500 px-6 py-4">Keine User gefunden.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

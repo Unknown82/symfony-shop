@@ -7,6 +7,7 @@ Willkommen zu meinem Symfony 7 basierten Shop-Projekt. Dieses Projekt demonstrie
 ## 🚀 Projektüberblick
 Dieses Symfony 7 Projekt beinhaltet:
 - Benutzerfreundliches Admin Dashboard
+- Benutzerfreundliches Kunden Bereich
 - Produktverwaltung (Erstellen, Bearbeiten, Löschen, Anzeigen)
 - Kategorieverwaltung
 - Warenkorb-Funktionalität

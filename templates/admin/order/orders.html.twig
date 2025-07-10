@@ -1,0 +1,63 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Adminbereich!{% endblock %}
+
+{% block body %}
+    <h1 class="text-3xl font-semibold mb-6 text-gray-800">Alle Bestellungen</h1>
+
+    <form method="post" action="{{ path('app_admin_orders_update') }}">
+        <div class="overflow-x-auto rounded-lg shadow">
+            <table class="min-w-full text-sm text-left text-gray-700 bg-white border border-gray-200">
+                <thead class="bg-gray-100 text-xs uppercase text-gray-600">
+                <tr>
+                    <th class="px-4 py-3">#</th>
+                    <th class="px-4 py-3">Referenz</th>
+                    <th class="px-4 py-3">Benutzer</th>
+                    <th class="px-4 py-3">Datum</th>
+                    <th class="px-4 py-3">Gesamtsumme</th>
+                    <th class="px-4 py-3 text-center">Offen</th>
+                    <th class="px-4 py-3 text-center">Verarbeitet</th>
+                    <th class="px-4 py-3 text-center">Versendet</th>
+                    <th class="px-4 py-3 text-center">Zugestellt</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-4 py-3">{{ loop.index }}</td>
+                        <td class="px-4 py-3">
+                            {% if order.orderReference %}
+                                <a href="{{ path('app_admin_orders_details', {'ref': order.orderReference}) }}" class="text-blue-600 hover:text-blue-800 underline">
+                                    {{ order.orderReference }}
+                                </a>
+                            {% else %}
+                                <span class="text-gray-400 italic">Keine Referenz</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-3">{{ order.userName }}</td>
+                        <td class="px-4 py-3">{{ order.orderDate|date('Y-m-d') }}</td>
+                        <td class="px-4 py-3">€{{ order.total }}</td>
+                        <td class="px-4 py-3 text-center">
+                            <input type="checkbox" name="statuses[{{ order.id }}][pending]" class="form-checkbox text-blue-500" {{ order.isPending ? 'checked' : '' }}>
+                        </td>
+                        <td class="px-4 py-3 text-center">
+                            <input type="checkbox" name="statuses[{{ order.id }}][processed]" class="form-checkbox text-green-500" {{ order.isProcessed ? 'checked' : '' }}>
+                        </td>
+                        <td class="px-4 py-3 text-center">
+                            <input type="checkbox" name="statuses[{{ order.id }}][shipped]" class="form-checkbox text-yellow-500" {{ order.isShipped ? 'checked' : '' }}>
+                        </td>
+                        <td class="px-4 py-3 text-center">
+                            <input type="checkbox" name="statuses[{{ order.id }}][delivered]" class="form-checkbox text-purple-500" {{ order.isDelivered ? 'checked' : '' }}>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6 text-right">
+            <button type="submit" class="px-5 py-5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded shadow">
+                Status aktualisieren
+            </button>
+        </div>
+    </form>
+{% endblock %}

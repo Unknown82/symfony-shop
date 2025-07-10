@@ -17,17 +17,17 @@
 
     <div class="min-h-screen flex flex-col">
         <header class="bg-white shadow-md p-4 flex justify-between items-center">
-            <div class="text-lg font-bold text-blue-600">Admin Panel</div>
+            <div class="text-lg font-bold text-blue-600">Admin-Bereich</div>
         </header>
 
         <div class="flex flex-1">
             <aside class="w-64 bg-white shadow-md">
                 <nav class="mt-5">
                     <a href="{{ path('app_admin') }}" class="block py-2 px-4 hover:bg-blue-100">Dashboard</a>
-                    <a href="{{ path('app_product') }}" class="block py-2 px-4 hover:bg-blue-100">Manage Product</a>
-                    <a href="{{ path('app_category') }}" class="block py-2 px-4 hover:bg-blue-100">Manage Categories</a>
-                    <a href="" class="block py-2 px-4 hover:bg-blue-100">Manage Orders</a>
-                    <a href="" class="block py-2 px-4 hover:bg-blue-100">Manage Users</a>
+                    <a href="{{ path('app_product') }}" class="block py-2 px-4 hover:bg-blue-100">Produkte verwalten</a>
+                    <a href="{{ path('app_category') }}" class="block py-2 px-4 hover:bg-blue-100">Kategorien verwalten</a>
+                    <a href="{{ path('app_admin_orders') }}" class="block py-2 px-4 hover:bg-blue-100">Bestellungen verwalten</a>
+                    <a href="{{ path('app_admin_users') }}" class="block py-2 px-4 hover:bg-blue-100">Nutzer verwalten</a>
                 </nav>
             </aside>
 

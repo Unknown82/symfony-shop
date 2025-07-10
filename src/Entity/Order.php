@@ -58,6 +58,9 @@ class Order
     #[ORM\OneToMany(targetEntity: CartHistory::class, mappedBy: 'order')]
     private Collection $cartHistories;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $orderDate = null;
+
     public function __construct()
     {
         $this->cartHistories = new ArrayCollection();
@@ -238,6 +241,18 @@ class Order
                 $cartHistory->setProductOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOrderDate(): ?\DateTime
+    {
+        return $this->orderDate;
+    }
+
+    public function setOrderDate(?\DateTime $orderDate): static
+    {
+        $this->orderDate = $orderDate;
 
         return $this;
     }

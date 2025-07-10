@@ -50,7 +50,7 @@ final class CartController extends AbstractController
         $total = $cartService->getTotal();
 
         if (empty($items)) {
-            $this->addFlash('error', 'Your cart is empty.');
+            $this->addFlash('error', 'Dein Warenkorb ist leer.');
             return $this->redirectToRoute('cart_view');
         }
         if ($request->isMethod('POST')) {
@@ -126,7 +126,7 @@ final class CartController extends AbstractController
         $total = $cartService->getTotal();
 
         if (empty($items)) {
-            $this->addFlash('error', 'Your cart is empty.');
+            $this->addFlash('error', 'Dein Warenkorb ist leer.');
             return $this->redirectToRoute('cart_view');
         }
 
@@ -144,8 +144,9 @@ final class CartController extends AbstractController
             ->setUserAddress($userAddress)
             ->setTotal($total)
             ->setPaymentMethod('stripe')
-            ->setPaymentStatus('Paid')
+            ->setPaymentStatus('Bezahlt')
             ->setIsPending(true)
+            ->setOrderDate(new \DateTime())
             ->setOrderReference($orderReference);
 
         foreach ($items as $item) {
